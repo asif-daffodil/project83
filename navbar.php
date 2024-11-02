@@ -25,13 +25,16 @@
             <li><a class="dropdown-item" href="./update-profile.php">Update Profile</a></li>
             <li><a class="dropdown-item" href="./profile-picture.php">Profile Picture</a></li>
             <li><a class="dropdown-item" href="./change-password.php">Change Password</a></li>
+            <?php if($_SESSION['user']['role'] == 'admin'){ ?>
+              <li><a class="dropdown-item" href="./admin">Admin Panel</a></li>
+            <?php } ?>
             <li><a class="dropdown-item" href="./logout.php">Logout</a></li>
           </ul>
         </li>
         <?php } ?>
         <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] == "admin"){ ?>
         <li class="nav-item">
-          <a class="nav-link" href="#">Admin Panel</a>
+          <a class="nav-link" href="./admin">Admin Panel</a>
         </li>
         <?php } ?>
         <!-- cart icon -->
