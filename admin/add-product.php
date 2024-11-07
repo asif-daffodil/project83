@@ -77,6 +77,11 @@ function get_content()
                 <button class="btn btn-primary" name="addProduct">Add Product</button>
             </form>
         </div>
+        <div class="col-md-6 d-flex">
+            <label for="image" class="m-auto">
+                <img src="https://via.placeholder.com/300x300?text=Upload%20Image" alt="Product Image" class="img-fluid" id="productImag" style="max-height: 400px">
+            </label>
+        </div>
     </div>
 
     <script type="module">
@@ -99,6 +104,15 @@ function get_content()
                 } )
                 .then( /* ... */ )
                 .catch( /* ... */ );
+
+            document.querySelector('#image').addEventListener('change', function(e){
+                let file = e.target.files[0];
+                let reader = new FileReader();
+                reader.onload = function(e){
+                    document.querySelector('#productImag').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            });
         </script>
 <?php
     return ob_get_clean();
