@@ -1,6 +1,6 @@
 <?php  
     session_start();
-    $conn = mysqli_connect("localhost","root","","project83");
+    require_once "db/db.php";
 ?>
 <!doctype html>
 <html lang="en">
@@ -20,6 +20,10 @@
             "positionClass": "toast-bottom-right",
         }
     </script>
+
+    <!-- jquery ui -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   </head>
   <body>
     <?php  

@@ -12,6 +12,9 @@
         <li class="nav-item">
           <a class="nav-link <?= $pageName == "index.php"?  "active":null ?>" aria-current="page" href="./">Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link <?= $pageName == "all-products.php"?  "active":null ?>" href="./all-products.php">Shop</a>
+        </li>
         <?php if(!isset($_SESSION['user'])){ ?>
             <li class="nav-item">
             <a class="nav-link" href="./signin.php">Sign In</a>
@@ -40,11 +43,26 @@
         </li>
         <!-- cart icon -->
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <button class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <i class="fas fa-shopping-cart"></i>
+          </button>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./search.php">
+            <i class="fas fa-search"></i>
           </a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
+</div>
