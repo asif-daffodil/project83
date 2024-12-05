@@ -42,9 +42,10 @@
           <a class="nav-link" href="./contact.php">Contact</a>
         </li>
         <!-- cart icon -->
-        <li class="nav-item">
-          <button class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+        <li class="nav-item me-2">
+          <button class="nav-link position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <i class="fas fa-shopping-cart"></i>
+            <span class="badge bg-primary position-absolute top-0 start-100 translate-middle-x" id="cartCount">0</span>
           </button>
         </li>
         <li class="nav-item">

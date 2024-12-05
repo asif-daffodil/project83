@@ -22,7 +22,7 @@ if (isset($_POST['addProduct'])) {
     $regular_price = $cn->real_escape_string(safeData($_POST['regular_price']));
     $sale_price = $cn->real_escape_string(safeData($_POST['sale_price']));
     $category = $cn->real_escape_string(safeData($_POST['category']));
-    $description = $cn->real_escape_string(safeData($_POST['description']));
+    $description = $cn->real_escape_string(string: safeData($_POST['description']));
     $image = $_FILES['image']['name'];
     $tmp_name = $_FILES['image']['tmp_name'];
     // create new image name

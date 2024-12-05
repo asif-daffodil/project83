@@ -9,13 +9,15 @@ $products = $conn->query("SELECT * FROM products ORDER BY id DESC LIMIT 0, 8")->
                 <img src="./uploads/<?= $product['image'] ?>" alt="<?= $product['name'] ?>" class="card-img-top mx-auto my-4" style="height: 140px; object-fit: cover; width: max-content">
                 <div class="card-body">
                     <a href="./single-product.php?pid=<?= $product['id'] ?>" class="text-decoration-none">
-                        <h5 class="card-title"><?= $product['name'] ?></h5>
+                        <h5 class="card-title"><?= htmlspecialchars($product['name'],  ENT_QUOTES, 'UTF-8') ?></h5>
                     </a>
                     <p class="card-text">
                         BDT <?= $product['sale_price'] ?>
                         <span class="text-decoration-line-through small text-muted">BDT <?= $product['regular_price'] ?></span>
                     </p>
-                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                    <button class="btn btn-primary" onclick="addToCart(<?= $product['id'] ?>)">
+                        Add to Cart
+                    </button>
                 </div>
             </div>
         </div>
@@ -24,5 +26,4 @@ $products = $conn->query("SELECT * FROM products ORDER BY id DESC LIMIT 0, 8")->
     <div class="col-12 text-center my-5">
         <a href="all-products.php" class="btn border border-3 border-primary px-5 py-3 rounded-pill shadow btn-outline-primary">View All</a>
     </div>
-
 </div>
