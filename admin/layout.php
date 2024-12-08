@@ -9,7 +9,7 @@ require_once './header.php';
         </div>
         <div class="col-md-10 p-0">
             <?php require_once './navbar.php' ?>
-            <div class="p-4">
+            <div class="p-4" style="height: calc(100vh - 60px); overflow-y: scroll;">
                 <?= $content ?? null ?>
             </div>
         </div>

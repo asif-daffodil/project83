@@ -8,8 +8,8 @@
             <a class="nav-link <?= $pageName == "index.php" ? "active":null ?>" href="./index.php">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link d-flex dd" data-bs-toggle="collapse" href="#product" role="button" aria-expanded="<?= $pageName == "all-product.php" || $pageName == "add-product.php" ? "true":"false" ?>" aria-controls="product">Product <span class="ms-auto"><i class="fa-solid fa-chevron-down"></i></span></a>
-            <div class="collapse bg-dark <?= $pageName == "all-product.php" || $pageName == "add-product.php" ? "show":null ?>" id="product">
+            <a class="nav-link d-flex dd" data-bs-toggle="collapse" href="#product" role="button" aria-expanded="<?= $pageName == "all-product.php" || $pageName == "add-product.php" || $pageName == "categories.php" ? "true":"false" ?>" aria-controls="product">Product <span class="ms-auto"><i class="fa-solid fa-chevron-down"></i></span></a>
+            <div class="collapse bg-dark <?= $pageName == "all-product.php" || $pageName == "add-product.php" || $pageName == "categories.php" ? "show":null ?>" id="product">
                 <div class="card card-body bg-dark">
                     <ul class="navbar-nav">
                         <li class="nav-item">
@@ -17,6 +17,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="./add-product.php" class="nav-link <?= $pageName == "add-product.php" ? "active":null ?>">Add Product</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="./categories.php" class="nav-link <?= $pageName == "categories.php" ? "active":null ?>">Categories</a>
                         </li>
                     </ul>
                 </div>

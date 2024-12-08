@@ -10,8 +10,9 @@
 
 <?php
 
+require_once './connection.php';
+
 if (isset($_POST['addProduct'])) {
-    require_once './connection.php';
     function safeData ($data) {
         $data = trim($data);
         $data = stripslashes($data);
@@ -23,12 +24,13 @@ if (isset($_POST['addProduct'])) {
     $sale_price = $cn->real_escape_string(safeData($_POST['sale_price']));
     $category = $cn->real_escape_string(safeData($_POST['category']));
     $description = $cn->real_escape_string(string: safeData($_POST['description']));
+    $stocks = $cn->real_escape_string(safeData($_POST['stocks']));
     $image = $_FILES['image']['name'];
     $tmp_name = $_FILES['image']['tmp_name'];
     // create new image name
     $image = time() . $image;
-    if(!empty($name) && !empty($regular_price) && !empty($sale_price) && !empty($category) && !empty($description) && !empty($image)){
-        $query = "INSERT INTO `products` (`name`, `regular_price`, `sale_price`, `category`, `description`, `image`) VALUES ('$name', $regular_price, $sale_price, '$category', '$description', '$image')";
+    if(!empty($name) && !empty($regular_price) && !empty($sale_price) && !empty($category) && !empty($description) && !empty($image) && !empty($stocks)){
+        $query = "INSERT INTO `products` (`name`, `regular_price`, `sale_price`, `category_id`, `description`, `stocks`, `image`) VALUES ('$name', $regular_price, $sale_price, '$category', '$description', $stocks, '$image')";
         $cn->query($query);
         move_uploaded_file($tmp_name, "../uploads/$image");
         echo "<script>setTimeout(() => { toastr.success('Product added successfully') }, 1000); setTimeout(() => { window.location.href = 'all-product.php' }, 2000);</script>";
@@ -36,6 +38,10 @@ if (isset($_POST['addProduct'])) {
         echo "<script>setTimeout(() => { toastr.error('Please fill all the fields') }, 1000);</script>";
     }
 }
+
+$categories = $cn->query("SELECT * FROM `categories`");
+
+
 
 function get_content()
 {
@@ -60,15 +66,23 @@ function get_content()
                 <div class="mb-3">
                     <label for="category" class="mb-2">Category</label>
                     <select name="category" id="category" class="form-select">
-                        <option value="Electronics">Electronics</option>
-                        <option value="Clothing">Clothing</option>
-                        <option value="Grocery">Grocery</option>
-                        <option value="Appliances">Appliances</option>
+                        <?php
+                        global $categories;
+                        foreach ($categories as $category) {
+                        ?>
+                            <option value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></option>
+                        <?php
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="mb-2">Description</label>
                     <textarea name="description" id="description" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="stocks" class="mb-2">Stocks</label>
+                    <input type="number" name="stocks" id="stocks" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="image" class="mb-2">Image</label>

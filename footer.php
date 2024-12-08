@@ -43,6 +43,66 @@
     }
   }
   cartCount();
+  // #cartList is the id of the div where we will show the cart items
+  $('#offcanvasRight').on('show.bs.offcanvas', function() {
+    if (localStorage.getItem('ghaziCart')) {
+      let cart = JSON.parse(localStorage.getItem('ghaziCart'));
+      $.post('ajax/cart-list.php', {
+        cart
+      }, (data) => {
+        $('#cartList').html(data);
+      });
+    } else {
+      $('#cartList').html('<h5 class="text-center">Cart is empty</h5>');
+    }
+  });
+
+  const removeFromCart = (pid) => {
+    // remove the product from the localStorage
+    let cart = JSON.parse(localStorage.getItem('ghaziCart'));
+    let newCart = cart.filter(p => p.id != pid);
+    localStorage.setItem('ghaziCart', JSON.stringify(newCart));
+    cartCount();
+    // remove the product from the cart list
+    $.post('ajax/cart-list.php', {
+      cart: newCart
+    }, (data) => {
+      $('#cartList').html(data);
+    });
+    // show a success message on toastr
+    toastr["success"]("Product removed from cart successfully!");
+  }
+
+  const decreaseQty = pid => {
+    let cart = JSON.parse(localStorage.getItem('ghaziCart'));
+    let found = cart.find(p => p.id == pid);
+    if (found.qty > 1) {
+      found.qty--;
+      localStorage.setItem('ghaziCart', JSON.stringify(cart));
+      cartCount();
+      $.post('ajax/cart-list.php', {
+        cart
+      }, (data) => {
+        $('#cartList').html(data);
+      });
+    }
+  } 
+
+  const increaseQty = pid => {
+    let cart = JSON.parse(localStorage.getItem('ghaziCart'));
+    let found = cart.find(p => p.id == pid);
+    if (found.qty >= 1) {
+      found.qty++;
+      localStorage.setItem('ghaziCart', JSON.stringify(cart));
+      cartCount();
+      $.post('ajax/cart-list.php', {
+        cart
+      }, (data) => {
+        $('#cartList').html(data);
+      });
+    }
+  }
+
   const addToCart = (pid) => {
     Swal.fire({
       title: 'Product added to cart successfully!',

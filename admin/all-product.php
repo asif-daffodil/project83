@@ -31,9 +31,9 @@ function get_content()
                 unlink("../uploads/$oldImg");
                 $image = time() . $image;
                 move_uploaded_file($tmp_name, "../uploads/$image");
-                $cn->query("UPDATE products SET name = '$name', regular_price = $regular_price, sale_price = $sale_price, category = '$category', description = '$description', image = '$image' WHERE id = $id");
+                $cn->query("UPDATE products SET name = '$name', regular_price = $regular_price, sale_price = $sale_price, category_id = $category, description = '$description', image = '$image' WHERE id = $id");
             } else {
-                $cn->query("UPDATE products SET name = '$name', regular_price = $regular_price, sale_price = $sale_price, category = '$category', description = '$description' WHERE id = $id");
+                $cn->query("UPDATE products SET name = '$name', regular_price = $regular_price, sale_price = $sale_price, category_id = $category, description = '$description' WHERE id = $id");
             }
             echo "<script>setTimeout(() => { toastr.success('Product updated successfully') }, 1000); setTimeout(() => { window.location.href = 'all-product.php' }, 2000);</script>";
         } else {
@@ -49,7 +49,7 @@ function get_content()
         echo "<script>setTimeout(() => { toastr.success('Product deleted successfully') }, 1000); setTimeout(() => { window.location.href = 'all-product.php' }, 2000);</script>";
     }
 
-    $products = $cn->query("SELECT * FROM products")->fetch_all(MYSQLI_ASSOC);
+    $products = $cn->query("SELECT `products`.*, `categories`.`name` AS `catName` FROM `products` INNER JOIN `categories` ON `products`.`category_id` = `categories`.`id`")->fetch_all(MYSQLI_ASSOC);
     ob_start();
 ?>
     <h2><?= !isset($_GET['eid']) && !isset($_GET['did']) ? "All Products" : (isset($_GET['eid']) ? "Update Product" : "Delete Product") ?></h2>
@@ -72,7 +72,7 @@ function get_content()
                         <td><img src="../uploads/<?= $product['image'] ?>" alt="<?= $product['name'] ?>" style="height: 80px;"></td>
                         <td><?= $product['name'] ?></td>
                         <td><?= $product['sale_price'] ?></td>
-                        <td><?= $product['category'] ?></td>
+                        <td><?= $product['catName'] ?></td>
                         <td>
                             <a href="all-product.php?eid=<?= $product['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
                             <a href="all-product.php?did=<?= $product['id'] ?>" class="btn btn-sm btn-danger">Delete</a>
@@ -83,7 +83,8 @@ function get_content()
         </table>
     <?php } elseif (isset($_GET['eid'])) {
         $id = $_GET['eid'];
-        $product = $cn->query("SELECT * FROM products WHERE id = $id")->fetch_assoc();
+        $product = $cn->query("SELECT `products`.*, `categories`.`name` AS `catName` FROM `products` INNER JOIN `categories` ON `products`.`category_id` = `categories`.`id` WHERE `products`.`id` = $id")->fetch_assoc();
+        $categories = $cn->query("SELECT * FROM `categories`");
     ?>
         <div class="row">
             <div class="col-md-6">
@@ -104,7 +105,15 @@ function get_content()
                     </div>
                     <div class="mb-3">
                         <label for="category" class="mb-2">Category</label>
-                        <input type="text" name="category" id="category" class="form-control" value="<?= $product['category'] ?>">
+                        <select name="category" id="category" class="form-select">
+                            <?php
+                            foreach ($categories as $category) {
+                            ?>
+                                <option value="<?= $category['id'] ?>" <?= $category['id'] == $product['category_id'] ? "selected" : null ?>><?= $category['name'] ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="mb-2">Description</label>
