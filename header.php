@@ -29,6 +29,14 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
-    <?php  
-        require_once "navbar.php";
+    <?php
+    function validate($data)
+    {
+      $data = trim($data);
+      $data = htmlspecialchars($data);
+      $data = stripslashes($data);
+      return $data;
+    }
+
+    require_once "navbar.php";
     ?>
