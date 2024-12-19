@@ -63,6 +63,8 @@
     <h5 class="offcanvas-title" id="offcanvasRightLabel">Cart List</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body" id="cartList">
+  <div class="offcanvas-body">
+    <div id="cartList"></div>
+    <button id="checkoutBtn" class="btn btn-primary mt-5 btn-sm w-100 d-none">Check-out</button>
   </div>
 </div>

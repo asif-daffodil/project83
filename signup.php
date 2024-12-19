@@ -50,8 +50,8 @@ if (isset($_POST['valibutton']) && $_POST['valibutton'] == 'Sign-up') {
 }
 ?>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6 mx-auto my-5">
+    <div class="row d-flex" style="min-height: calc(100vh - 50px);">
+        <div class="col-lg-6 m-auto" style="height: max-content;">
             <div class="card">
                 <div class="card-header bg-dark text-white">
                     <h3>Sign Up</h3>
@@ -80,6 +80,9 @@ if (isset($_POST['valibutton']) && $_POST['valibutton'] == 'Sign-up') {
                         </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-dark" name="valibutton" value="Sign-up">Sign Up</button>
+                        </div>
+                        <div class="small">
+                            Already have an account? <a href="signin.php">Sign In</a>
                         </div>
                     </form>
                 </div>

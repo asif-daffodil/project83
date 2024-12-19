@@ -1,6 +1,10 @@
 <?php  
     require_once "header.php";
-    $pageNo = $_GET['page'] ?? header("Location: all-products.php?page=1");
+    if (!isset($_GET['page'])) {
+        echo "<script>window.location = 'all-products.php?page=1'</script>";
+        exit; // Make sure to stop further execution after the redirect.
+    }
+    $pageNo = $_GET['page'];
     $limit = 8;
     $offset = ($pageNo - 1) * $limit;
     $sql = "SELECT * FROM `products` LIMIT $offset, $limit";

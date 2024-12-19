@@ -40,7 +40,14 @@
       let cart = JSON.parse(localStorage.getItem('ghaziCart'));
       let count = cart.reduce((acc, p) => acc + p.qty, 0);
       document.querySelector('#cartCount').innerText = count;
+      if (count > 0) {
+        document.querySelector('#checkoutBtn').classList.remove('d-none');
+      } else {
+        document.querySelector('#checkoutBtn').classList.add('d-none');
+      }
     }
+
+
   }
   cartCount();
   // #cartList is the id of the div where we will show the cart items
@@ -147,6 +154,10 @@
       }
     });
   }
+
+  $("#checkoutBtn").on('click', () => {
+    window.location.href = './checkout.php';
+  });
 </script>
 </body>
 

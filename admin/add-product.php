@@ -1,41 +1,75 @@
 <?php
-
-require_once './connection.php';
-
-if (isset($_POST['addProduct'])) {
-    function safeData ($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-      }
-    $name = $cn->real_escape_string(safeData($_POST['name']));
-    $regular_price = $cn->real_escape_string(safeData($_POST['regular_price']));
-    $sale_price = $cn->real_escape_string(safeData($_POST['sale_price']));
-    $category = $cn->real_escape_string(safeData($_POST['category']));
-    $description = $cn->real_escape_string(string: safeData($_POST['description']));
-    $stocks = $cn->real_escape_string(safeData($_POST['stocks']));
-    $image = $_FILES['image']['name'];
-    $tmp_name = $_FILES['image']['tmp_name'];
-    // create new image name
-    $image = time() . $image;
-    if(!empty($name) && !empty($regular_price) && !empty($sale_price) && !empty($category) && !empty($description) && !empty($image) && !empty($stocks)){
-        $query = "INSERT INTO `products` (`name`, `regular_price`, `sale_price`, `category_id`, `description`, `stocks`, `image`) VALUES ('$name', $regular_price, $sale_price, '$category', '$description', $stocks, '$image')";
-        $cn->query($query);
-        move_uploaded_file($tmp_name, "../uploads/$image");
-        echo "<script>setTimeout(() => { toastr.success('Product added successfully') }, 1000); setTimeout(() => { window.location.href = 'all-product.php' }, 2000);</script>";
-    }else{
-        echo "<script>setTimeout(() => { toastr.error('Please fill all the fields') }, 1000);</script>";
-    }
-}
-
+include './connection.php';
 $categories = $cn->query("SELECT * FROM `categories`");
-
-
-
 function get_content()
 {
     ob_start();
+    $cn = mysqli_connect('localhost', 'root', '', 'project83');
+    if (isset($_POST['addProduct'])) {
+        function safeData ($data) {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+          }
+        $name = $cn->real_escape_string(safeData($_POST['name']));
+        $regular_price = $cn->real_escape_string(safeData($_POST['regular_price']));
+        $sale_price = $cn->real_escape_string(safeData($_POST['sale_price']));
+        $category = $cn->real_escape_string(safeData($_POST['category']));
+        $description = $cn->real_escape_string(string: safeData($_POST['description']));
+        $stocks = $cn->real_escape_string(safeData($_POST['stocks']));
+        $image = $_FILES['image']['name'];
+        $tmp_name = $_FILES['image']['tmp_name'];
+        if(empty($name)){
+            $errName = "Please fill the name";
+        }else{
+            $crrName = $name;
+        }
+    
+        if(empty($regular_price)){
+            $errRegular_price = "Please fill the regular price";
+        }else{
+            $crrRegular_price = $regular_price;
+        }
+    
+        if(empty($sale_price)){
+            $errSale_price = "Please fill the sale price";
+        }else{
+            $crrSale_price = $sale_price;
+        }
+    
+        if(empty($category)){
+            $errCategory = "Please fill the category";
+        }else{
+            $crrCategory = $category;
+        }
+    
+        if(empty($description)){
+            $errDescription = "Please fill the description";
+        }else{
+            $crrDescription = $description;
+        }
+    
+        if(empty($stocks)){
+            $errStocks = "Please fill the stocks";
+        }else{
+            $crrStocks = $stocks;
+        }
+    
+        if(empty($image)){
+            $errImage = "Please fill the image";
+        }
+    
+        // create new image name
+        $image = time() . $image;
+        if(!empty($crrName) && !empty($crrRegular_price) && !empty($crrSale_price) && !empty($crrCategory) && !empty($crrDescription) && !empty($image) && !empty($crrStocks)){
+            $query = "INSERT INTO `products` (`name`, `regular_price`, `sale_price`, `category_id`, `description`, `stocks`, `image`) VALUES ('$name', $regular_price, $sale_price, '$category', '$description', $stocks, '$image')";
+            $cn->query($query);
+            move_uploaded_file($tmp_name, "../uploads/$image");
+            echo "<script>setTimeout(() => { toastr.success('Product added successfully') }, 1000); setTimeout(() => { window.location.href = 'all-product.php' }, 2000);</script>";
+        }
+    }
+
 ?>
     <h2>Add Product</h2>
     <div class="row">
@@ -43,40 +77,64 @@ function get_content()
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="mb-2">Product Name</label>
-                    <input type="text" name="name" id="name" class="form-control">
+                    <input type="text" name="name" id="name" class="form-control <?= isset($errName) ? 'is-invalid' : '' ?>" value="<?= $crrName ?? null ?>">
+                    <div class="invalid-feedback">
+                        <?= $errName ?? null ?>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="regular_price" class="mb-2">Regular Price</label>
-                    <input type="number" name="regular_price" id="regular_price" class="form-control">
+                    <input type="number" name="regular_price" id="regular_price" class="form-control <?= isset($errRegular_price) ? 'is-invalid' : '' ?>" value="<?= $crrRegular_price ?? null ?>">
+                    <div class="invalid-feedback">
+                        <?= $errRegular_price ?? null ?>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="sale_price" class="mb-2">Sale Price</label>
-                    <input type="number" name="sale_price" id="sale_price" class="form-control">
+                    <input type="number" name="sale_price" id="sale_price" class="form-control <?= isset($errSale_price) ? 'is-invalid' : '' ?>" value="<?= $crrSale_price ?? null ?>">
+                    <div class="invalid-feedback">
+                        <?= $errSale_price ?? null ?>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="category" class="mb-2">Category</label>
-                    <select name="category" id="category" class="form-select">
+                    <select name="category" id="category" class="form-select <?= isset($errCategory) ? 'is-invalid' : '' ?>">
+                        <option value="">Select Category</option>
                         <?php
                         global $categories;
                         foreach ($categories as $category) {
                         ?>
-                            <option value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></option>
+                            <option value="<?php echo $category['id'] ?>" <?= isset($crrCategory) ? "selected":null ?> ><?php echo $category['name'] ?></option>
                         <?php
                         }
                         ?>
                     </select>
+                    <div class="invalid-feedback">
+                        <?= $errCategory ?? null ?>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="mb-2">Description</label>
-                    <textarea name="description" id="description" class="form-control"></textarea>
+                    <textarea name="description" id="description" class="form-control <?= isset($errDescription) ? 'is-invalid' : '' ?>">
+                        <?= $crrDescription ?? null ?>
+                    </textarea>
+                    <div class="invalid-feedback">
+                        <?= $errDescription ?? null ?>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="stocks" class="mb-2">Stocks</label>
-                    <input type="number" name="stocks" id="stocks" class="form-control">
+                    <input type="number" name="stocks" id="stocks" class="form-control <?= isset($errStocks) ? 'is-invalid' : '' ?>" value="<?= $crrStocks ?? null ?>">
+                    <div class="invalid-feedback">
+                        <?= $errStocks ?? null ?>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="mb-2">Image</label>
-                    <input type="file" name="image" id="image" class="form-control">
+                    <input type="file" name="image" id="image" class="form-control <?= isset($errImage) ? 'is-invalid' : '' ?>">
+                    <div class="invalid-feedback">
+                        <?= $errImage ?? null ?>
+                    </div>
                 </div>
                 <button class="btn btn-primary" name="addProduct">Add Product</button>
             </form>

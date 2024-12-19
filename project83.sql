@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2024 at 09:57 AM
+-- Generation Time: Dec 19, 2024 at 10:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,9 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`id`, `name`, `created_at`) VALUES
 (1, 'Cloth', '2024-12-07 08:57:33'),
-(2, 'Mobile', '2024-12-07 08:59:03');
+(2, 'Mobile', '2024-12-07 08:59:03'),
+(3, 'Sports', '2024-12-12 09:13:27'),
+(4, 'Politics', '2024-12-12 09:17:17');
 
 -- --------------------------------------------------------
 
@@ -99,7 +101,8 @@ INSERT INTO `products` (`id`, `name`, `category_id`, `regular_price`, `sale_pric
 (12, 'pixel 7', 1, 15000, 12000, 20, '1730365062Pixel-7.jpg', '&lt;p&gt;&lt;strong&gt;Lorem Ipsum&lt;/strong&gt;&lt;span style=&quot;background-color:rgb(255,255,255);color:rgb(0,0,0);&quot;&gt; is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.&lt;/span&gt;&lt;/p&gt;', '2024-10-31 08:57:42'),
 (13, 'Stylish T-Shirt', 1, 1200, 950, 20, '173096798851HfSy7vC8L._AC_SX569_.jpg', '<p><strong>Lorem Ipsum</strong><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\"> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span></p>', '2024-11-07 08:26:28'),
 (14, 'Wome\'s T-shirt', 1, 2000, 1650, 20, '173097001571j0zMW9aUL._AC_SY550_.jpg', '<p><strong>Lorem Ipsum</strong><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\"> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span></p>', '2024-11-07 09:00:15'),
-(15, 'Pant2', 1, 3000, 2000, 20, '1733646800914jUAocoXL._AC_SY550_.jpg', '<p><strong>Lorem Ipsum</strong><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\"> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span></p>', '2024-12-08 08:33:20');
+(15, 'Pant2', 1, 3000, 2000, 20, '1733646800914jUAocoXL._AC_SY550_.jpg', '<p><strong>Lorem Ipsum</strong><span style=\"background-color:rgb(255,255,255);color:rgb(0,0,0);\"> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span></p>', '2024-12-08 08:33:20'),
+(16, 'Haat Ghori', 1, 15000, 500, 1000, '1734598614Azu6hg0hiKh7fPNAKikWaJBTHqgLBdJY5WvhBqHs.jpg', '&lt;p&gt;Best hang clock from Mujahidul Isalm&lt;/p&gt;', '2024-12-19 08:56:54');
 
 -- --------------------------------------------------------
 
@@ -114,6 +117,13 @@ CREATE TABLE `users` (
   `password` varchar(100) NOT NULL,
   `img` varchar(100) DEFAULT NULL,
   `role` enum('admin','user') NOT NULL DEFAULT 'user',
+  `address_line_1` varchar(255) NOT NULL,
+  `address_line_2` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `zip` varchar(100) NOT NULL,
+  `country` varchar(255) NOT NULL,
+  `phone` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -121,13 +131,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `img`, `role`, `created_at`) VALUES
-(1, 'Aiman Ghazi', 'aiman@ghazi.com', '$2y$10$cxJM2XjLzFr6aSzqcWJKvuUBD.klPbEAgx56VFpC3rf5.o2C/2KIS', NULL, 'user', '2024-10-19 08:12:14'),
-(2, 'Protikkha Tanwi', 'protikkha@tanwi.com', '$2y$10$1FB53J52EOmYK2Gxi6WjOOsND4WYgA4XaVHpH/34GyzaJnvaEuPI6', NULL, 'user', '2024-10-19 08:14:39'),
-(3, 'Asif Abir', 'asif@dti.ac', '$2y$10$F2eKjhc95Q4cOX.QNCeIO.iF/crAjzkJHkWToruxZR.xBqNBG88Li', 'uploads/67137237af4169.38411104.jpg', 'admin', '2024-10-19 08:15:36'),
-(4, 'Muzahidul Islam', 'muzahid@gmail.com', '$2y$10$w9Jg25vt/6pdqpxUjLvure.VCXRbKgYSIjFXPJjLPDu.6Nps0f31u', NULL, 'user', '2024-10-19 08:17:17'),
-(5, 'Golam Mostafa', 'golam@mostofa.com', '$2y$10$y5x6lk.wwlJoEuDU4l3tTOh2ryYTqCnn5VJhT7kPORJz6k9W8tG3e', NULL, 'user', '2024-10-19 08:20:53'),
-(6, 'Ayan', 'ayan@gmail.com', '$2y$10$hh36/Vr7kzvXefQO30CP1O.ba9UnhtaumH0MHfY8yfDiYbhAH2Vma', NULL, 'user', '2024-10-19 08:22:57');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `img`, `role`, `address_line_1`, `address_line_2`, `city`, `state`, `zip`, `country`, `phone`, `created_at`) VALUES
+(1, 'Aiman Ghazi', 'aiman@ghazi.com', '$2y$10$cxJM2XjLzFr6aSzqcWJKvuUBD.klPbEAgx56VFpC3rf5.o2C/2KIS', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:12:14'),
+(2, 'Protikkha Tanwi', 'protikkha@tanwi.com', '$2y$10$1FB53J52EOmYK2Gxi6WjOOsND4WYgA4XaVHpH/34GyzaJnvaEuPI6', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:14:39'),
+(3, 'Asif Abir', 'asif@dti.ac', '$2y$10$F2eKjhc95Q4cOX.QNCeIO.iF/crAjzkJHkWToruxZR.xBqNBG88Li', 'uploads/67137237af4169.38411104.jpg', 'admin', '', '', '', '', '', '0', '', '2024-10-19 08:15:36'),
+(4, 'Muzahidul Islam', 'muzahid@gmail.com', '$2y$10$w9Jg25vt/6pdqpxUjLvure.VCXRbKgYSIjFXPJjLPDu.6Nps0f31u', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:17:17'),
+(5, 'Golam Mostafa', 'golam@mostofa.com', '$2y$10$y5x6lk.wwlJoEuDU4l3tTOh2ryYTqCnn5VJhT7kPORJz6k9W8tG3e', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:20:53'),
+(6, 'Ayan', 'ayan@gmail.com', '$2y$10$hh36/Vr7kzvXefQO30CP1O.ba9UnhtaumH0MHfY8yfDiYbhAH2Vma', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:22:57');
 
 --
 -- Indexes for dumped tables
@@ -166,7 +176,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `contact_messages`
@@ -178,7 +188,7 @@ ALTER TABLE `contact_messages`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`

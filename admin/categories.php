@@ -39,12 +39,12 @@ function get_content()
                                 <td><?= $i++ ?></td>
                                 <td><?= $category['name'] ?></td>
                                 <td>
-                                    <a href="edit-category.php?id=<?= $category['id'] ?>" class="btn btn-sm btn-warning">
+                                    <button data-editId="<?= $category['id'] ?>" class="btn btn-sm btn-warning btnEdit">
                                         <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
-                                    <a href="delete-category.php?id=<?= $category['id'] ?>" class="btn btn-sm btn-danger">
+                                    </button>
+                                    <button data-dekId="<?= $category['id'] ?>" class="btn btn-sm btn-danger btnDelete">
                                         <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -70,6 +70,46 @@ function get_content()
                             <div class="invalid-feedback"></div>
                         </div>
                         <button class="btn btn-primary" name="addCategory">Add Category</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div class="modal fade" id="editCatModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Category</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="edit-category.php" method="post" id="editCatForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Category Name</label>
+                            <input type="text" name="name" id="editName" class="form-control">
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <button class="btn btn-primary" name="editCategory">Edit Category</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete category modal -->
+    <div class="modal fade" id="deleteCatModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Category</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this category?</p>
+                    <form action="delete-category.php" method="post" id="deleteCatForm">
+                        <button class="btn btn-danger" name="deleteCategory">Delete Category</button>
                     </form>
                 </div>
             </div>
@@ -108,7 +148,7 @@ function get_content()
                     $('#name').removeClass('is-invalid');
                     $('#name').next().html('');
                     $.ajax({
-                        url: "./add-category.php",
+                        url: "./ajax/category.php",
                         method: "POST",
                         data: data,
                         processData: false,
@@ -126,6 +166,82 @@ function get_content()
                     });
                 }
             });
+
+            $(".btnEdit").on('click', function(){
+                $('#editCatModal').modal('show');
+                const id = $(this).data('editid');
+                $.ajax({
+                    url: "./ajax/category.php",
+                    method: "POST",
+                    data: {id: id, editId: true},
+                    success: function(response){
+                        const data = JSON.parse(response);
+                        $('#editName').val(data.name);
+                        $('#editCatForm').append(`<input type="hidden" name="id" value="${data.id}">`);
+                    }
+                });
+            });
+
+            $('#editCatForm').submit(function(e) {
+                e.preventDefault();
+                const data = new FormData(this);
+                data.append('editCategory', 'true');
+                // check if name is not empty
+                if (data.get('name') == '') {
+                    $('#editName').addClass('is-invalid');
+                    $('#editName').next().html('Please fill the category name');
+                } else {
+                    $('#editName').removeClass('is-invalid');
+                    $('#editName').next().html('');
+                    $.ajax({
+                        url: "./ajax/category.php",
+                        method: "POST",
+                        data: data,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response == 'success') {
+                                toastr.success('Category updated successfully');
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 2000);
+                            } else {
+                                toastr.error('Failed to update category');
+                            }
+                        }
+                    });
+                }
+            });
+
+            $(".btnDelete").on('click', function(){
+                $('#deleteCatModal').modal('show');
+                const id = $(this).data('dekid');
+                $('#deleteCatForm').append(`<input type="hidden" name="id" value="${id}">`);
+            });
+
+            $('#deleteCatForm').submit(function(e) {
+                e.preventDefault();
+                const data = new FormData(this);
+                data.append('deleteCategory', 'true');
+                $.ajax({
+                    url: "./ajax/category.php",
+                    method: "POST",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response == 'success') {
+                            toastr.success('Category deleted successfully');
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000);
+                        } else {
+                            toastr.error('Failed to delete category');
+                        }
+                    }
+                });
+            });
+
         });
     </script>
 <?php
