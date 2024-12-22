@@ -76,6 +76,11 @@
     }, (data) => {
       $('#cartList').html(data);
     });
+    $.post('ajax/checkout.php', {
+      cart
+    }, (data) => {
+      $('#cartProducts').html(data);
+    });
     // show a success message on toastr
     toastr["success"]("Product removed from cart successfully!");
   }
@@ -92,8 +97,13 @@
       }, (data) => {
         $('#cartList').html(data);
       });
+      $.post('ajax/checkout.php', {
+        cart
+      }, (data) => {
+        $('#cartProducts').html(data);
+      });
     }
-  } 
+  }
 
   const increaseQty = pid => {
     let cart = JSON.parse(localStorage.getItem('ghaziCart'));
@@ -106,6 +116,11 @@
         cart
       }, (data) => {
         $('#cartList').html(data);
+      });
+      $.post('ajax/checkout.php', {
+        cart
+      }, (data) => {
+        $('#cartProducts').html(data);
       });
     }
   }

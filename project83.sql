@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 19, 2024 at 10:57 AM
+-- Generation Time: Dec 21, 2024 at 09:57 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -134,7 +134,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `img`, `role`, `address_line_1`, `address_line_2`, `city`, `state`, `zip`, `country`, `phone`, `created_at`) VALUES
 (1, 'Aiman Ghazi', 'aiman@ghazi.com', '$2y$10$cxJM2XjLzFr6aSzqcWJKvuUBD.klPbEAgx56VFpC3rf5.o2C/2KIS', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:12:14'),
 (2, 'Protikkha Tanwi', 'protikkha@tanwi.com', '$2y$10$1FB53J52EOmYK2Gxi6WjOOsND4WYgA4XaVHpH/34GyzaJnvaEuPI6', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:14:39'),
-(3, 'Asif Abir', 'asif@dti.ac', '$2y$10$F2eKjhc95Q4cOX.QNCeIO.iF/crAjzkJHkWToruxZR.xBqNBG88Li', 'uploads/67137237af4169.38411104.jpg', 'admin', '', '', '', '', '', '0', '', '2024-10-19 08:15:36'),
+(3, 'Asif Abir', 'asif@dti.ac', '$2y$10$F2eKjhc95Q4cOX.QNCeIO.iF/crAjzkJHkWToruxZR.xBqNBG88Li', 'uploads/67137237af4169.38411104.jpg', 'admin', '9 Sher-E-Bangla Road', 'Hazaribagh', 'Dhaka', 'Dhaka', '1209', 'Bangladesh', '01955517560', '2024-10-19 08:15:36'),
 (4, 'Muzahidul Islam', 'muzahid@gmail.com', '$2y$10$w9Jg25vt/6pdqpxUjLvure.VCXRbKgYSIjFXPJjLPDu.6Nps0f31u', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:17:17'),
 (5, 'Golam Mostafa', 'golam@mostofa.com', '$2y$10$y5x6lk.wwlJoEuDU4l3tTOh2ryYTqCnn5VJhT7kPORJz6k9W8tG3e', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:20:53'),
 (6, 'Ayan', 'ayan@gmail.com', '$2y$10$hh36/Vr7kzvXefQO30CP1O.ba9UnhtaumH0MHfY8yfDiYbhAH2Vma', NULL, 'user', '', '', '', '', '', '0', '', '2024-10-19 08:22:57');
