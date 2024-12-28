@@ -21,8 +21,8 @@ if (isset($_POST['valibutton']) && $_POST['valibutton'] == 'Sign-in') {
     if (empty($password)) {
         $errPassword = "Password is required";
         $hasError = true;
-    } elseif (strlen($password) < 8) {
-        $errPassword = "Password must be at least 8 characters long";
+    } elseif (strlen($password) < 6) {
+        $errPassword = "Password must be at least 6 characters long";
         $hasError = true;
     }
 
