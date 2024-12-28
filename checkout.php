@@ -4,6 +4,104 @@ if (!isset($_SESSION['user'])) {
     echo "<script>window.location = 'signin.php'</script>";
 }
 $countries = array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Congo (Democratic Republic of the)", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea (North)", "Korea (South)", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
+
+if (isset($_POST['submit123'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $address_line_1 = $_POST['address_line_1'];
+    $address_line_2 = $_POST['address_line_2'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $zip = $_POST['zip'];
+    $country = $_POST['country'];
+    $phone = $_POST['phone'];
+
+    if (empty($name)) {
+        $errName = "Please enter name";
+    } elseif (!preg_match("/^[a-zA-Z.\-\' ]*$/", $name)) {
+        $errName = "Only letters and white space allowed";
+    } else {
+        $crrName = $conn->real_escape_string(validate($name));
+    }
+
+    if (empty($email)) {
+        $errEmail = "Please enter email";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errEmail = "Please enter valid email";
+    } else {
+        if ($email != $_SESSION['user']['email']) {
+            $sql = "SELECT * FROM `users` WHERE `email` = '$email'";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                $errEmail = "Email already exists";
+            } else {
+                $crrEmail = $conn->real_escape_string(validate($email));
+            }
+        } else {
+            $crrEmail = $conn->real_escape_string(validate($email));
+        }
+    }
+
+    if (empty($address_line_1)) {
+        $errAddressLine1 = "Please enter address line 1";
+    } else {
+        $crrAddressLine1 = $conn->real_escape_string(validate($address_line_1));
+    }
+
+    if (!empty($address_line_2)) {
+        $crrAddressLine2 = $conn->real_escape_string(validate($address_line_2));
+    }else{
+        $crrAddressLine2 = null;
+    }
+
+    if (empty($city)) {
+        $errCity = "Please enter city";
+    } else {
+        $crrCity = $conn->real_escape_string(validate($city));
+    }
+
+    if (empty($state)) {
+        $errState = "Please enter state";
+    } else {
+        $crrState = $conn->real_escape_string(validate($state));
+    }
+
+    if (empty($zip)) {
+        $errZip = "Please enter zip";
+    } else {
+        $crrZip = $conn->real_escape_string(validate($zip));
+    }
+
+    if (empty($country)) {
+        $errCountry = "Please select country";
+    } else {
+        $crrCountry = $conn->real_escape_string(validate($country));
+    }
+
+    if (empty($phone)) {
+        $errPhone = "Please enter phone";
+    } else {
+        $crrPhone = $conn->real_escape_string(validate($phone));
+    }
+
+    $id = $_SESSION['user']['id'];
+
+    if(isset($crrName) && isset($crrEmail) && isset($crrAddressLine1) && isset($crrCity) && isset($crrState) && isset($crrZip) && isset($crrCountry) && isset($crrPhone)){
+        $sql = "UPDATE `users` SET `name` = '$crrName', `email` = '$crrEmail', `address_line_1` = '$crrAddressLine1', `address_line_2` = '$crrAddressLine2', `city` = '$crrCity', `state` = '$crrState', `zip` = '$crrZip', `country` = '$crrCountry', `phone` = '$crrPhone' WHERE `id` = '$id'";
+        if($conn->query($sql)){
+            $sql = "SELECT * FROM `users` WHERE `id` = '$id'";
+            $result = $conn->query($sql);
+            if($result->num_rows > 0){
+                $row = $result->fetch_assoc();
+                $_SESSION['user'] = $row;
+                echo "<script>toastr.success('Profile updated successfully')</script>";
+            }
+        }else{
+            echo "<script>toastr.error('Something went wrong')</script>";
+        }
+    }
+}
+
 ?>
 <div class="container">
     <div class="row py-5">
@@ -61,7 +159,7 @@ $countries = array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "An
                     </select>
                     <?= (isset($errCountry)) ? '<div class="invalid-feedback">' . $errCountry . '</div>' : ''; ?>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" name="submit123">Submit</button>
             </form>
         </div>
         <div class="col-md-1"></div>
